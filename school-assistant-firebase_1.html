@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Помощник для онлайн-школы - Firebase</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #667eea;
+            --primary-dark: #764ba2;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --info: #17a2b8;
+            --light: #f8f9fa;
+            --dark: #333;
+            --border: #e9ecef;
+            --text: #666;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            min-height: 100vh;
+            padding: 15px;
+        }
+
+        .auth-screen {
+            display: none;
+            max-width: 500px;
+            margin: 50px auto;
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .auth-screen.active {
+            display: block;
+        }
+
+        .auth-screen h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary);
+            font-size: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .auth-buttons button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background: var(--light);
+            color: var(--dark);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: white;
+            padding: 20px;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .container {
+            display: none;
+            max-width: 1800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .container.active {
+            display: block;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .header-buttons button {
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+
+        .header-buttons button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .user-info {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: var(--light);
+            border-bottom: 2px solid var(--border);
+            padding: 0;
+            overflow-x: auto;
+            flex-wrap: wrap;
+        }
+
+        .nav-tab {
+            padding: 12px 18px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .nav-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .nav-tab:hover {
+            background: #f0f0f0;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 25px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-info {
+            background: var(--info);
+            color: white;
+        }
+
+        .btn-info:hover {
+            background: #138496;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-row.full {
+            grid-template-columns: 1fr;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-header h2 {
+            font-size: 20px;
+            color: var(--dark);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text);
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .value {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--light);
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        tr:hover {
+            background: #f0f0f0;
+        }
+
+        .sync-status {
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .sync-status.synced {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .sync-status.syncing {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .sync-status.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-row {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Auth Screen -->
+    <div class="auth-screen active" id="authScreen">
+        <h1>🎓 Помощник для онлайн-школы</h1>
+        <div class="error-message" id="authError"></div>
+        <div class="loading" id="authLoading">
+            <p>Загрузка...</p>
+        </div>
+
+        <div id="authForm">
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="email" id="authEmail" placeholder="ваша@почта.ru" required>
+            </div>
+            <div class="form-group">
+                <label>Пароль:</label>
+                <input type="password" id="authPassword" placeholder="••••••••" required>
+            </div>
+            <div class="auth-buttons">
+                <button class="btn-primary" onclick="login()">Вход</button>
+                <button class="btn-secondary" onclick="signup()">Регистрация</button>
+            </div>
+            <p style="text-align: center; margin-top: 20px; font-size: 12px; color: var(--text);">
+                Данные хранятся в облаке и синхронизируются на всех устройствах
+            </p>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div class="container" id="appContainer">
+        <div class="header">
+            <div>
+                <h1>🎓 Помощник для онлайн-школы</h1>
+                <small>Firebase версия - данные синхронизируются в реальном времени</small>
+            </div>
+            <div class="header-buttons">
+                <div class="user-info">
+                    <div id="userEmail">Загрузка...</div>
+                    <div id="syncStatus" class="sync-status synced">✓ Синхронизировано</div>
+                </div>
+                <button onclick="logout()">Выход</button>
+            </div>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="switchTab('dashboard')">📊 Панель</button>
+            <button class="nav-tab" onclick="switchTab('teachers')">👨‍🏫 Учителя</button>
+            <button class="nav-tab" onclick="switchTab('students')">👨‍🎓 Ученики</button>
+            <button class="nav-tab" onclick="switchTab('lessons')">📅 Уроки</button>
+            <button class="nav-tab" onclick="switchTab('payments')">💳 Платежи</button>
+            <button class="nav-tab" onclick="switchTab('analytics')">📈 Аналитика</button>
+        </div>
+
+        <!-- Dashboard Tab -->
+        <div class="tab-content active" id="dashboard">
+            <h2>Панель управления</h2>
+            <div class="stats-row" id="statsRow">
+                <div class="stat-card">
+                    <h3>Учителей</h3>
+                    <div class="value" id="teacherCount">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Учеников</h3>
+                    <div class="value" id="studentCount">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Уроков</h3>
+                    <div class="value" id="lessonCount">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Доход</h3>
+                    <div class="value" id="incomeValue">0₽</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Teachers Tab -->
+        <div class="tab-content" id="teachers">
+            <h2>Управление учителями</h2>
+            <button class="btn btn-success" onclick="openAddTeacherModal()">+ Добавить учителя</button>
+            <table id="teachersTable">
+                <thead>
+                    <tr>
+                        <th>Имя</th>
+                        <th>Предмет</th>
+                        <th>Ставка (₽/урок)</th>
+                        <th>Телефон</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody id="teachersBody">
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Students Tab -->
+        <div class="tab-content" id="students">
+            <h2>Управление учениками</h2>
+            <button class="btn btn-success" onclick="openAddStudentModal()">+ Добавить ученика</button>
+            <table id="studentsTable">
+                <thead>
+                    <tr>
+                        <th>Имя</th>
+                        <th>Уровень</th>
+                        <th>Цена (₽/урок)</th>
+                        <th>Телефон</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody id="studentsBody">
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Lessons Tab -->
+        <div class="tab-content" id="lessons">
+            <h2>Расписание уроков</h2>
+            <button class="btn btn-success" onclick="openAddLessonModal()">+ Добавить урок</button>
+            <table id="lessonsTable">
+                <thead>
+                    <tr>
+                        <th>Дата</th>
+                        <th>Учитель</th>
+                        <th>Ученик</th>
+                        <th>Статус</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody id="lessonsBody">
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Payments Tab -->
+        <div class="tab-content" id="payments">
+            <h2>Платежи</h2>
+            <button class="btn btn-success" onclick="openAddPaymentModal()">+ Добавить платеж</button>
+            <table id="paymentsTable">
+                <thead>
+                    <tr>
+                        <th>Дата</th>
+                        <th>От кого</th>
+                        <th>Сумма</th>
+                        <th>Тип</th>
+                        <th>Статус</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody id="paymentsBody">
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Analytics Tab -->
+        <div class="tab-content" id="analytics">
+            <h2>Аналитика</h2>
+            <p>Период 1-15: <strong id="period1Income">0₽</strong> доход, <strong id="period1Salary">0₽</strong> зарплата</p>
+            <p>Период 16-25: <strong id="period2Income">0₽</strong> доход, <strong id="period2Salary">0₽</strong> зарплата</p>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal" id="addTeacherModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Добавить учителя</h2>
+                <button class="close-btn" onclick="closeModal('addTeacherModal')">×</button>
+            </div>
+            <div class="form-group">
+                <label>Имя:</label>
+                <input type="text" id="teacherName" placeholder="Например: Иван Петров">
+            </div>
+            <div class="form-group">
+                <label>Предмет:</label>
+                <input type="text" id="teacherSubject" placeholder="Например: Математика">
+            </div>
+            <div class="form-group">
+                <label>Ставка (₽ за урок):</label>
+                <input type="number" id="teacherRate" placeholder="500">
+            </div>
+            <div class="form-group">
+                <label>Телефон:</label>
+                <input type="tel" id="teacherPhone" placeholder="+7...">
+            </div>
+            <button class="btn btn-success" onclick="addTeacher()">Сохранить</button>
+        </div>
+    </div>
+
+    <div class="modal" id="addStudentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Добавить ученика</h2>
+                <button class="close-btn" onclick="closeModal('addStudentModal')">×</button>
+            </div>
+            <div class="form-group">
+                <label>Имя:</label>
+                <input type="text" id="studentName" placeholder="Например: Мария Сидорова">
+            </div>
+            <div class="form-group">
+                <label>Уровень:</label>
+                <input type="text" id="studentLevel" placeholder="Например: Beginner">
+            </div>
+            <div class="form-group">
+                <label>Цена (₽ за урок):</label>
+                <input type="number" id="studentPrice" placeholder="800">
+            </div>
+            <div class="form-group">
+                <label>Телефон:</label>
+                <input type="tel" id="studentPhone" placeholder="+7...">
+            </div>
+            <button class="btn btn-success" onclick="addStudent()">Сохранить</button>
+        </div>
+    </div>
+
+    <div class="modal" id="addLessonModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Добавить урок</h2>
+                <button class="close-btn" onclick="closeModal('addLessonModal')">×</button>
+            </div>
+            <div class="form-group">
+                <label>Дата и время:</label>
+                <input type="datetime-local" id="lessonDate">
+            </div>
+            <div class="form-group">
+                <label>Учитель:</label>
+                <select id="lessonTeacher">
+                    <option value="">Выберите учителя</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Ученик:</label>
+                <select id="lessonStudent">
+                    <option value="">Выберите ученика</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Статус:</label>
+                <select id="lessonStatus">
+                    <option value="planned">Запланирован</option>
+                    <option value="completed">Завершен</option>
+                    <option value="cancelled">Отменен</option>
+                </select>
+            </div>
+            <button class="btn btn-success" onclick="addLesson()">Сохранить</button>
+        </div>
+    </div>
+
+    <div class="modal" id="addPaymentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Добавить платеж</h2>
+                <button class="close-btn" onclick="closeModal('addPaymentModal')">×</button>
+            </div>
+            <div class="form-group">
+                <label>Дата:</label>
+                <input type="date" id="paymentDate">
+            </div>
+            <div class="form-group">
+                <label>От кого:</label>
+                <select id="paymentFrom">
+                    <option value="">Выберите</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Сумма (₽):</label>
+                <input type="number" id="paymentAmount" placeholder="1000">
+            </div>
+            <div class="form-group">
+                <label>Тип:</label>
+                <select id="paymentType">
+                    <option value="incoming">От ученика</option>
+                    <option value="outgoing">Зарплата учителю</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Статус:</label>
+                <select id="paymentStatus">
+                    <option value="paid">Оплачено</option>
+                    <option value="pending">Ожидает</option>
+                </select>
+            </div>
+            <button class="btn btn-success" onclick="addPayment()">Сохранить</button>
+        </div>
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js"></script>
+
+    <script>
+        // ============================================
+        // FIREBASE CONFIGURATION
+        // ============================================
+        // ВАЖНО: Вам нужно создать свой Firebase проект!
+        // Инструкции ниже в комментариях
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAs1NEJk3cEwtZ-Lb4cizsAQr0lAMOusEo",
+            authDomain: "school-assistant-bd660.firebaseapp.com",
+            projectId: "school-assistant-bd660",
+            storageBucket: "school-assistant-bd660.firebasestorage.app",
+            messagingSenderId: "303832764538",
+            appId: "1:303832764538:web:df0a6d65e5e4726084abc3"
+        };
+
+        // Initialize Firebase
+        let app, auth, db;
+        let currentUser = null;
+
+        function initFirebase() {
+            try {
+                app = firebase.initializeApp(firebaseConfig);
+                auth = firebase.auth();
+                db = firebase.firestore();
+
+                // Listen to auth changes
+                auth.onAuthStateChanged((user) => {
+                    if (user) {
+                        currentUser = user;
+                        document.getElementById('authScreen').classList.remove('active');
+                        document.getElementById('appContainer').classList.add('active');
+                        document.getElementById('userEmail').textContent = user.email;
+                        loadAllData();
+                    } else {
+                        currentUser = null;
+                        document.getElementById('authScreen').classList.add('active');
+                        document.getElementById('appContainer').classList.remove('active');
+                    }
+                });
+            } catch (error) {
+                showAuthError('Ошибка инициализации Firebase. Проверьте конфигурацию.');
+                console.error('Firebase init error:', error);
+            }
+        }
+
+        // ============================================
+        // AUTHENTICATION
+        // ============================================
+
+        async function signup() {
+            const email = document.getElementById('authEmail').value;
+            const password = document.getElementById('authPassword').value;
+
+            if (!email || !password) {
+                showAuthError('Заполните email и пароль');
+                return;
+            }
+
+            showAuthLoading(true);
+            try {
+                await auth.createUserWithEmailAndPassword(email, password);
+                showAuthLoading(false);
+            } catch (error) {
+                showAuthLoading(false);
+                showAuthError('Ошибка регистрации: ' + error.message);
+            }
+        }
+
+        async function login() {
+            const email = document.getElementById('authEmail').value;
+            const password = document.getElementById('authPassword').value;
+
+            if (!email || !password) {
+                showAuthError('Заполните email и пароль');
+                return;
+            }
+
+            showAuthLoading(true);
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                showAuthLoading(false);
+            } catch (error) {
+                showAuthLoading(false);
+                showAuthError('Ошибка входа: ' + error.message);
+            }
+        }
+
+        async function logout() {
+            await auth.signOut();
+        }
+
+        function showAuthError(message) {
+            const errorDiv = document.getElementById('authError');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+        }
+
+        function showAuthLoading(show) {
+            document.getElementById('authLoading').classList.toggle('show', show);
+            document.getElementById('authForm').style.display = show ? 'none' : 'block';
+        }
+
+        // ============================================
+        // DATA MANAGEMENT
+        // ============================================
+
+        let data = {
+            teachers: [],
+            students: [],
+            lessons: [],
+            payments: []
+        };
+
+        async function loadAllData() {
+            try {
+                // Load teachers
+                const teachersSnap = await db.collection('users').doc(currentUser.uid).collection('teachers').get();
+                data.teachers = teachersSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                // Load students
+                const studentsSnap = await db.collection('users').doc(currentUser.uid).collection('students').get();
+                data.students = studentsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                // Load lessons
+                const lessonsSnap = await db.collection('users').doc(currentUser.uid).collection('lessons').get();
+                data.lessons = lessonsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                // Load payments
+                const paymentsSnap = await db.collection('users').doc(currentUser.uid).collection('payments').get();
+                data.payments = paymentsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                updateUI();
+            } catch (error) {
+                console.error('Error loading data:', error);
+            }
+        }
+
+        async function addTeacher() {
+            const name = document.getElementById('teacherName').value;
+            const subject = document.getElementById('teacherSubject').value;
+            const rate = parseFloat(document.getElementById('teacherRate').value);
+            const phone = document.getElementById('teacherPhone').value;
+
+            if (!name || !subject || !rate) {
+                alert('Заполните все поля');
+                return;
+            }
+
+            try {
+                await db.collection('users').doc(currentUser.uid).collection('teachers').add({
+                    name, subject, rate, phone,
+                    createdAt: new Date()
+                });
+                closeModal('addTeacherModal');
+                clearTeacherForm();
+                loadAllData();
+            } catch (error) {
+                alert('Ошибка: ' + error.message);
+            }
+        }
+
+        async function addStudent() {
+            const name = document.getElementById('studentName').value;
+            const level = document.getElementById('studentLevel').value;
+            const price = parseFloat(document.getElementById('studentPrice').value);
+            const phone = document.getElementById('studentPhone').value;
+
+            if (!name || !level || !price) {
+                alert('Заполните все поля');
+                return;
+            }
+
+            try {
+                await db.collection('users').doc(currentUser.uid).collection('students').add({
+                    name, level, price, phone,
+                    createdAt: new Date()
+                });
+                closeModal('addStudentModal');
+                clearStudentForm();
+                loadAllData();
+            } catch (error) {
+                alert('Ошибка: ' + error.message);
+            }
+        }
+
+        async function addLesson() {
+            const date = document.getElementById('lessonDate').value;
+            const teacherId = document.getElementById('lessonTeacher').value;
+            const studentId = document.getElementById('lessonStudent').value;
+            const status = document.getElementById('lessonStatus').value;
+
+            if (!date || !teacherId || !studentId) {
+                alert('Заполните все поля');
+                return;
+            }
+
+            try {
+                await db.collection('users').doc(currentUser.uid).collection('lessons').add({
+                    date, teacherId, studentId, status,
+                    createdAt: new Date()
+                });
+                closeModal('addLessonModal');
+                clearLessonForm();
+                loadAllData();
+            } catch (error) {
+                alert('Ошибка: ' + error.message);
+            }
+        }
+
+        async function addPayment() {
+            const date = document.getElementById('paymentDate').value;
+            const from = document.getElementById('paymentFrom').value;
+            const amount = parseFloat(document.getElementById('paymentAmount').value);
+            const type = document.getElementById('paymentType').value;
+            const status = document.getElementById('paymentStatus').value;
+
+            if (!date || !from || !amount) {
+                alert('Заполните все поля');
+                return;
+            }
+
+            try {
+                await db.collection('users').doc(currentUser.uid).collection('payments').add({
+                    date, from, amount, type, status,
+                    createdAt: new Date()
+                });
+                closeModal('addPaymentModal');
+                clearPaymentForm();
+                loadAllData();
+            } catch (error) {
+                alert('Ошибка: ' + error.message);
+            }
+        }
+
+        // ============================================
+        // UI UPDATES
+        // ============================================
+
+        function updateUI() {
+            updateStats();
+            updateTeachersTable();
+            updateStudentsTable();
+            updateLessonsTable();
+            updatePaymentsTable();
+            updateSelects();
+            updateAnalytics();
+        }
+
+        function updateStats() {
+            document.getElementById('teacherCount').textContent = data.teachers.length;
+            document.getElementById('studentCount').textContent = data.students.length;
+            document.getElementById('lessonCount').textContent = data.lessons.length;
+
+            const income = data.payments
+                .filter(p => p.type === 'incoming' && p.status === 'paid')
+                .reduce((sum, p) => sum + p.amount, 0);
+            document.getElementById('incomeValue').textContent = income + '₽';
+        }
+
+        function updateTeachersTable() {
+            const tbody = document.getElementById('teachersBody');
+            tbody.innerHTML = data.teachers.map(teacher => `
+                <tr>
+                    <td>${teacher.name}</td>
+                    <td>${teacher.subject}</td>
+                    <td>${teacher.rate}₽</td>
+                    <td>${teacher.phone || '-'}</td>
+                    <td>
+                        <button class="btn btn-danger" onclick="deleteTeacher('${teacher.id}')">Удалить</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function updateStudentsTable() {
+            const tbody = document.getElementById('studentsBody');
+            tbody.innerHTML = data.students.map(student => `
+                <tr>
+                    <td>${student.name}</td>
+                    <td>${student.level}</td>
+                    <td>${student.price}₽</td>
+                    <td>${student.phone || '-'}</td>
+                    <td>
+                        <button class="btn btn-danger" onclick="deleteStudent('${student.id}')">Удалить</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function updateLessonsTable() {
+            const tbody = document.getElementById('lessonsBody');
+            tbody.innerHTML = data.lessons.map(lesson => {
+                const teacher = data.teachers.find(t => t.id === lesson.teacherId);
+                const student = data.students.find(s => s.id === lesson.studentId);
+                return `
+                    <tr>
+                        <td>${lesson.date}</td>
+                        <td>${teacher?.name || 'Неизвестно'}</td>
+                        <td>${student?.name || 'Неизвестно'}</td>
+                        <td>${lesson.status}</td>
+                        <td>
+                            <button class="btn btn-danger" onclick="deleteLesson('${lesson.id}')">Удалить</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function updatePaymentsTable() {
+            const tbody = document.getElementById('paymentsBody');
+            tbody.innerHTML = data.payments.map(payment => `
+                <tr>
+                    <td>${payment.date}</td>
+                    <td>${payment.from}</td>
+                    <td>${payment.amount}₽</td>
+                    <td>${payment.type === 'incoming' ? 'От ученика' : 'Зарплата'}</td>
+                    <td>${payment.status === 'paid' ? 'Оплачено' : 'Ожидает'}</td>
+                    <td>
+                        <button class="btn btn-danger" onclick="deletePayment('${payment.id}')">Удалить</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function updateSelects() {
+            const teacherSelect = document.getElementById('lessonTeacher');
+            const studentSelect = document.getElementById('lessonStudent');
+            const paymentSelect = document.getElementById('paymentFrom');
+
+            teacherSelect.innerHTML = '<option value="">Выберите учителя</option>' +
+                data.teachers.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
+
+            studentSelect.innerHTML = '<option value="">Выберите ученика</option>' +
+                data.students.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+
+            const allPeople = [
+                ...data.teachers.map(t => ({ id: t.id, name: t.name })),
+                ...data.students.map(s => ({ id: s.id, name: s.name }))
+            ];
+            paymentSelect.innerHTML = '<option value="">Выберите</option>' +
+                allPeople.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+        }
+
+        function updateAnalytics() {
+            const period1 = data.payments.filter(p => {
+                const date = new Date(p.date);
+                return date.getDate() <= 15 && p.type === 'incoming';
+            }).reduce((sum, p) => sum + p.amount, 0);
+
+            const period2 = data.payments.filter(p => {
+                const date = new Date(p.date);
+                return date.getDate() > 15 && p.type === 'incoming';
+            }).reduce((sum, p) => sum + p.amount, 0);
+
+            const salary1 = data.payments.filter(p => {
+                const date = new Date(p.date);
+                return date.getDate() <= 15 && p.type === 'outgoing';
+            }).reduce((sum, p) => sum + p.amount, 0);
+
+            const salary2 = data.payments.filter(p => {
+                const date = new Date(p.date);
+                return date.getDate() > 15 && p.type === 'outgoing';
+            }).reduce((sum, p) => sum + p.amount, 0);
+
+            document.getElementById('period1Income').textContent = period1 + '₽';
+            document.getElementById('period1Salary').textContent = salary1 + '₽';
+            document.getElementById('period2Income').textContent = period2 + '₽';
+            document.getElementById('period2Salary').textContent = salary2 + '₽';
+        }
+
+        async function deleteTeacher(id) {
+            if (confirm('Удалить учителя?')) {
+                await db.collection('users').doc(currentUser.uid).collection('teachers').doc(id).delete();
+                loadAllData();
+            }
+        }
+
+        async function deleteStudent(id) {
+            if (confirm('Удалить ученика?')) {
+                await db.collection('users').doc(currentUser.uid).collection('students').doc(id).delete();
+                loadAllData();
+            }
+        }
+
+        async function deleteLesson(id) {
+            if (confirm('Удалить урок?')) {
+                await db.collection('users').doc(currentUser.uid).collection('lessons').doc(id).delete();
+                loadAllData();
+            }
+        }
+
+        async function deletePayment(id) {
+            if (confirm('Удалить платеж?')) {
+                await db.collection('users').doc(currentUser.uid).collection('payments').doc(id).delete();
+                loadAllData();
+            }
+        }
+
+        // ============================================
+        // MODAL FUNCTIONS
+        // ============================================
+
+        function openAddTeacherModal() {
+            document.getElementById('addTeacherModal').classList.add('active');
+        }
+
+        function openAddStudentModal() {
+            document.getElementById('addStudentModal').classList.add('active');
+        }
+
+        function openAddLessonModal() {
+            document.getElementById('addLessonModal').classList.add('active');
+        }
+
+        function openAddPaymentModal() {
+            document.getElementById('addPaymentModal').classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        function clearTeacherForm() {
+            document.getElementById('teacherName').value = '';
+            document.getElementById('teacherSubject').value = '';
+            document.getElementById('teacherRate').value = '';
+            document.getElementById('teacherPhone').value = '';
+        }
+
+        function clearStudentForm() {
+            document.getElementById('studentName').value = '';
+            document.getElementById('studentLevel').value = '';
+            document.getElementById('studentPrice').value = '';
+            document.getElementById('studentPhone').value = '';
+        }
+
+        function clearLessonForm() {
+            document.getElementById('lessonDate').value = '';
+            document.getElementById('lessonTeacher').value = '';
+            document.getElementById('lessonStudent').value = '';
+            document.getElementById('lessonStatus').value = 'planned';
+        }
+
+        function clearPaymentForm() {
+            document.getElementById('paymentDate').value = '';
+            document.getElementById('paymentFrom').value = '';
+            document.getElementById('paymentAmount').value = '';
+            document.getElementById('paymentType').value = 'incoming';
+            document.getElementById('paymentStatus').value = 'paid';
+        }
+
+        // ============================================
+        // TAB SWITCHING
+        // ============================================
+
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-tab').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Close modals on outside click
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+            }
+        }
+
+        // Initialize on load
+        window.addEventListener('load', initFirebase);
+    </script>
+</body>
+</html>
