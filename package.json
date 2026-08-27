@@ -1,0 +1,8 @@
+{
+  "name": "school-assistant",
+  "version": "1.0.0",
+  "description": "Помощник для онлайн-школы - управление преподавателями, учениками, расписанием и зарплатой",
+  "keywords": ["school", "assistant", "management", "salary", "lessons"],
+  "author": "School Assistant",
+  "license": "MIT"
+}
