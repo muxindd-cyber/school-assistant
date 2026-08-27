@@ -729,6 +729,13 @@
         let currentUser = null;
 
         function initFirebase() {
+            // Ждем пока Firebase загрузится
+            if (typeof firebase === 'undefined') {
+                console.warn('Firebase SDK не загружен, ждем...');
+                setTimeout(initFirebase, 500);
+                return;
+            }
+
             try {
                 app = firebase.initializeApp(firebaseConfig);
                 auth = firebase.auth();
