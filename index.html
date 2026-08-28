@@ -10,7 +10,6 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         :root {
             --primary: #667eea;
             --primary-dark: #764ba2;
@@ -23,14 +22,12 @@
             --border: #e9ecef;
             --text: #666;
         }
-
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             min-height: 100vh;
             padding: 15px;
         }
-
         .auth-screen {
             display: none;
             max-width: 500px;
@@ -40,29 +37,24 @@
             padding: 40px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
-
         .auth-screen.active {
             display: block;
         }
-
         .auth-screen h1 {
             text-align: center;
             margin-bottom: 30px;
             color: var(--primary);
             font-size: 28px;
         }
-
         .form-group {
             margin-bottom: 15px;
         }
-
         .form-group label {
             display: block;
             margin-bottom: 5px;
             font-weight: 600;
             color: var(--dark);
         }
-
         .form-group input {
             width: 100%;
             padding: 12px;
@@ -70,13 +62,11 @@
             border-radius: 8px;
             font-size: 14px;
         }
-
         .auth-buttons {
             display: flex;
             gap: 10px;
             margin-top: 20px;
         }
-
         .auth-buttons button {
             flex: 1;
             padding: 12px;
@@ -87,26 +77,25 @@
             cursor: pointer;
             transition: all 0.3s;
         }
-
+        .auth-buttons button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
         .btn-primary {
             background: var(--primary);
             color: white;
         }
-
         .btn-primary:hover {
             background: var(--primary-dark);
         }
-
         .btn-secondary {
             background: var(--light);
             color: var(--dark);
             border: 1px solid var(--border);
         }
-
         .btn-secondary:hover {
             background: var(--border);
         }
-
         .error-message {
             background: #f8d7da;
             color: #721c24;
@@ -115,22 +104,18 @@
             margin-bottom: 15px;
             display: none;
         }
-
         .error-message.show {
             display: block;
         }
-
         .loading {
             display: none;
             text-align: center;
             color: white;
             padding: 20px;
         }
-
         .loading.show {
             display: block;
         }
-
         .container {
             display: none;
             max-width: 1800px;
@@ -140,11 +125,9 @@
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             overflow: hidden;
         }
-
         .container.active {
             display: block;
         }
-
         .header {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
@@ -153,16 +136,13 @@
             justify-content: space-between;
             align-items: center;
         }
-
         .header h1 {
             font-size: 24px;
         }
-
         .header-buttons {
             display: flex;
             gap: 10px;
         }
-
         .header-buttons button {
             padding: 8px 15px;
             background: rgba(255, 255, 255, 0.2);
@@ -173,16 +153,13 @@
             font-size: 12px;
             transition: all 0.3s;
         }
-
         .header-buttons button:hover {
             background: rgba(255, 255, 255, 0.3);
         }
-
         .user-info {
             font-size: 12px;
             opacity: 0.9;
         }
-
         .nav-tabs {
             display: flex;
             background: var(--light);
@@ -191,7 +168,6 @@
             overflow-x: auto;
             flex-wrap: wrap;
         }
-
         .nav-tab {
             padding: 12px 18px;
             cursor: pointer;
@@ -204,25 +180,20 @@
             transition: all 0.3s;
             white-space: nowrap;
         }
-
         .nav-tab.active {
             color: var(--primary);
             border-bottom-color: var(--primary);
         }
-
         .nav-tab:hover {
             background: #f0f0f0;
         }
-
         .tab-content {
             display: none;
             padding: 25px;
         }
-
         .tab-content.active {
             display: block;
         }
-
         .btn {
             padding: 10px 16px;
             border: none;
@@ -234,45 +205,36 @@
             margin-right: 10px;
             margin-bottom: 10px;
         }
-
         .btn-success {
             background: var(--success);
             color: white;
         }
-
         .btn-success:hover {
             background: #218838;
         }
-
         .btn-danger {
             background: var(--danger);
             color: white;
         }
-
         .btn-danger:hover {
             background: #c82333;
         }
-
         .btn-info {
             background: var(--info);
             color: white;
         }
-
         .btn-info:hover {
             background: #138496;
         }
-
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
             margin-bottom: 15px;
         }
-
         .form-row.full {
             grid-template-columns: 1fr;
         }
-
         .modal {
             display: none;
             position: fixed;
@@ -285,11 +247,9 @@
             align-items: center;
             justify-content: center;
         }
-
         .modal.active {
             display: flex;
         }
-
         .modal-content {
             background: white;
             border-radius: 15px;
@@ -299,7 +259,6 @@
             max-height: 80vh;
             overflow-y: auto;
         }
-
         .modal-header {
             display: flex;
             justify-content: space-between;
@@ -308,12 +267,10 @@
             padding-bottom: 15px;
             border-bottom: 1px solid var(--border);
         }
-
         .modal-header h2 {
             font-size: 20px;
             color: var(--dark);
         }
-
         .close-btn {
             background: none;
             border: none;
@@ -321,14 +278,12 @@
             cursor: pointer;
             color: var(--text);
         }
-
         .stats-row {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
             margin-bottom: 25px;
         }
-
         .stat-card {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
@@ -336,40 +291,33 @@
             border-radius: 10px;
             text-align: center;
         }
-
         .stat-card h3 {
             font-size: 12px;
             opacity: 0.9;
             margin-bottom: 10px;
         }
-
         .stat-card .value {
             font-size: 32px;
             font-weight: bold;
         }
-
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
         }
-
         th, td {
             padding: 12px;
             text-align: left;
             border-bottom: 1px solid var(--border);
         }
-
         th {
             background: var(--light);
             font-weight: 600;
             color: var(--dark);
         }
-
         tr:hover {
             background: #f0f0f0;
         }
-
         .sync-status {
             padding: 8px 12px;
             border-radius: 20px;
@@ -378,41 +326,33 @@
             display: inline-block;
             margin-bottom: 15px;
         }
-
         .sync-status.synced {
             background: #d4edda;
             color: #155724;
         }
-
         .sync-status.syncing {
             background: #fff3cd;
             color: #856404;
         }
-
         .sync-status.error {
             background: #f8d7da;
             color: #721c24;
         }
-
         @media (max-width: 768px) {
             .form-row {
                 grid-template-columns: 1fr;
             }
-
             .stats-row {
                 grid-template-columns: 1fr;
             }
-
             .header {
                 flex-direction: column;
                 gap: 15px;
                 text-align: center;
             }
-
             table {
                 font-size: 12px;
             }
-
             th, td {
                 padding: 8px;
             }
@@ -427,8 +367,7 @@
         <div class="loading" id="authLoading">
             <p>Загрузка...</p>
         </div>
-
-        <div id="authForm">
+        <div id="authForm" style="display: none;">
             <div class="form-group">
                 <label>Email:</label>
                 <input type="email" id="authEmail" placeholder="ваша@почта.ru" required>
@@ -438,12 +377,16 @@
                 <input type="password" id="authPassword" placeholder="••••••••" required>
             </div>
             <div class="auth-buttons">
-                <button class="btn-primary" onclick="login()">Вход</button>
-                <button class="btn-secondary" onclick="signup()">Регистрация</button>
+                <button class="btn-primary" onclick="login()" disabled>Вход</button>
+                <button class="btn-secondary" onclick="signup()" disabled>Регистрация</button>
             </div>
             <p style="text-align: center; margin-top: 20px; font-size: 12px; color: var(--text);">
                 Данные хранятся в облаке и синхронизируются на всех устройствах
             </p>
+        </div>
+        <div id="initLoading" style="text-align: center; color: var(--primary); padding: 20px;">
+            <p>⚙️ Инициализация Firebase...</p>
+            <p style="font-size: 12px; color: var(--text); margin-top: 10px;">Пожалуйста, подождите</p>
         </div>
     </div>
 
@@ -462,7 +405,6 @@
                 <button onclick="logout()">Выход</button>
             </div>
         </div>
-
         <div class="nav-tabs">
             <button class="nav-tab active" onclick="switchTab('dashboard')">📊 Панель</button>
             <button class="nav-tab" onclick="switchTab('teachers')">👨‍🏫 Учителя</button>
@@ -471,8 +413,6 @@
             <button class="nav-tab" onclick="switchTab('payments')">💳 Платежи</button>
             <button class="nav-tab" onclick="switchTab('analytics')">📈 Аналитика</button>
         </div>
-
-        <!-- Dashboard Tab -->
         <div class="tab-content active" id="dashboard">
             <h2>Панель управления</h2>
             <div class="stats-row" id="statsRow">
@@ -494,8 +434,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Teachers Tab -->
         <div class="tab-content" id="teachers">
             <h2>Управление учителями</h2>
             <button class="btn btn-success" onclick="openAddTeacherModal()">+ Добавить учителя</button>
@@ -509,12 +447,9 @@
                         <th>Действия</th>
                     </tr>
                 </thead>
-                <tbody id="teachersBody">
-                </tbody>
+                <tbody id="teachersBody"></tbody>
             </table>
         </div>
-
-        <!-- Students Tab -->
         <div class="tab-content" id="students">
             <h2>Управление учениками</h2>
             <button class="btn btn-success" onclick="openAddStudentModal()">+ Добавить ученика</button>
@@ -528,12 +463,9 @@
                         <th>Действия</th>
                     </tr>
                 </thead>
-                <tbody id="studentsBody">
-                </tbody>
+                <tbody id="studentsBody"></tbody>
             </table>
         </div>
-
-        <!-- Lessons Tab -->
         <div class="tab-content" id="lessons">
             <h2>Расписание уроков</h2>
             <button class="btn btn-success" onclick="openAddLessonModal()">+ Добавить урок</button>
@@ -547,12 +479,9 @@
                         <th>Действия</th>
                     </tr>
                 </thead>
-                <tbody id="lessonsBody">
-                </tbody>
+                <tbody id="lessonsBody"></tbody>
             </table>
         </div>
-
-        <!-- Payments Tab -->
         <div class="tab-content" id="payments">
             <h2>Платежи</h2>
             <button class="btn btn-success" onclick="openAddPaymentModal()">+ Добавить платеж</button>
@@ -567,12 +496,9 @@
                         <th>Действия</th>
                     </tr>
                 </thead>
-                <tbody id="paymentsBody">
-                </tbody>
+                <tbody id="paymentsBody"></tbody>
             </table>
         </div>
-
-        <!-- Analytics Tab -->
         <div class="tab-content" id="analytics">
             <h2>Аналитика</h2>
             <p>Период 1-15: <strong id="period1Income">0₽</strong> доход, <strong id="period1Salary">0₽</strong> зарплата</p>
@@ -606,7 +532,6 @@
             <button class="btn btn-success" onclick="addTeacher()">Сохранить</button>
         </div>
     </div>
-
     <div class="modal" id="addStudentModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -632,7 +557,6 @@
             <button class="btn btn-success" onclick="addStudent()">Сохранить</button>
         </div>
     </div>
-
     <div class="modal" id="addLessonModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -666,7 +590,6 @@
             <button class="btn btn-success" onclick="addLesson()">Сохранить</button>
         </div>
     </div>
-
     <div class="modal" id="addPaymentModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -711,10 +634,6 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js"></script>
 
     <script>
-        // ============================================
-        // FIREBASE CONFIGURATION
-        // ============================================
-
         const firebaseConfig = {
             apiKey: "AIzaSyAs1NEJk3cEwtZ-Lb4cizsAQr0lAMOusEo",
             authDomain: "school-assistant-bd660.firebaseapp.com",
@@ -724,12 +643,11 @@
             appId: "1:303832764538:web:df0a6d65e5e4726084abc3"
         };
 
-        // Initialize Firebase
         let app, auth, db;
         let currentUser = null;
+        let isFirebaseReady = false;
 
         function initFirebase() {
-            // Ждем пока Firebase загрузится
             if (typeof firebase === 'undefined') {
                 console.warn('Firebase SDK не загружен, ждем...');
                 setTimeout(initFirebase, 500);
@@ -737,11 +655,19 @@
             }
 
             try {
-                app = firebase.initializeApp(firebaseConfig);
+                if (firebase.apps.length === 0) {
+                    app = firebase.initializeApp(firebaseConfig);
+                } else {
+                    app = firebase.apps[0];
+                }
+
                 auth = firebase.auth();
                 db = firebase.firestore();
+                isFirebaseReady = true;
+                console.log('✓ Firebase инициализирован успешно');
 
-                // Listen to auth changes
+                enableAuthButtons();
+
                 auth.onAuthStateChanged((user) => {
                     if (user) {
                         currentUser = user;
@@ -756,16 +682,42 @@
                     }
                 });
             } catch (error) {
-                showAuthError('Ошибка инициализации Firebase. Проверьте конфигурацию.');
+                isFirebaseReady = false;
+                showAuthError('Ошибка инициализации Firebase. Проверьте конфигурацию: ' + error.message);
                 console.error('Firebase init error:', error);
             }
         }
 
-        // ============================================
-        // AUTHENTICATION
-        // ============================================
+        function enableAuthButtons() {
+            const loginBtn = document.querySelector('.btn-primary');
+            const signupBtn = document.querySelector('.btn-secondary');
+            const authForm = document.getElementById('authForm');
+            const initLoading = document.getElementById('initLoading');
+
+            if (loginBtn) loginBtn.disabled = false;
+            if (signupBtn) signupBtn.disabled = false;
+            if (authForm) authForm.style.display = 'block';
+            if (initLoading) initLoading.style.display = 'none';
+        }
+
+        function disableAuthButtons() {
+            const loginBtn = document.querySelector('.btn-primary');
+            const signupBtn = document.querySelector('.btn-secondary');
+            if (loginBtn) loginBtn.disabled = true;
+            if (signupBtn) signupBtn.disabled = true;
+        }
 
         async function signup() {
+            if (!isFirebaseReady) {
+                showAuthError('Firebase еще загружается... Пожалуйста, подождите');
+                return;
+            }
+
+            if (!auth) {
+                showAuthError('Ошибка: Firebase auth не инициализирован');
+                return;
+            }
+
             const email = document.getElementById('authEmail').value;
             const password = document.getElementById('authPassword').value;
 
@@ -785,6 +737,16 @@
         }
 
         async function login() {
+            if (!isFirebaseReady) {
+                showAuthError('Firebase еще загружается... Пожалуйста, подождите');
+                return;
+            }
+
+            if (!auth) {
+                showAuthError('Ошибка: Firebase auth не инициализирован');
+                return;
+            }
+
             const email = document.getElementById('authEmail').value;
             const password = document.getElementById('authPassword').value;
 
@@ -818,10 +780,6 @@
             document.getElementById('authForm').style.display = show ? 'none' : 'block';
         }
 
-        // ============================================
-        // DATA MANAGEMENT
-        // ============================================
-
         let data = {
             teachers: [],
             students: [],
@@ -831,19 +789,15 @@
 
         async function loadAllData() {
             try {
-                // Load teachers
                 const teachersSnap = await db.collection('users').doc(currentUser.uid).collection('teachers').get();
                 data.teachers = teachersSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-                // Load students
                 const studentsSnap = await db.collection('users').doc(currentUser.uid).collection('students').get();
                 data.students = studentsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-                // Load lessons
                 const lessonsSnap = await db.collection('users').doc(currentUser.uid).collection('lessons').get();
                 data.lessons = lessonsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-                // Load payments
                 const paymentsSnap = await db.collection('users').doc(currentUser.uid).collection('payments').get();
                 data.payments = paymentsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
@@ -949,10 +903,6 @@
                 alert('Ошибка: ' + error.message);
             }
         }
-
-        // ============================================
-        // UI UPDATES
-        // ============================================
 
         function updateUI() {
             updateStats();
@@ -1114,10 +1064,6 @@
             }
         }
 
-        // ============================================
-        // MODAL FUNCTIONS
-        // ============================================
-
         function openAddTeacherModal() {
             document.getElementById('addTeacherModal').classList.add('active');
         }
@@ -1167,12 +1113,7 @@
             document.getElementById('paymentStatus').value = 'paid';
         }
 
-        // ============================================
-        // TAB SWITCHING
-        // ============================================
-
         function switchTab(tabName) {
-            // Hide all tabs
             document.querySelectorAll('.tab-content').forEach(tab => {
                 tab.classList.remove('active');
             });
@@ -1180,19 +1121,16 @@
                 btn.classList.remove('active');
             });
 
-            // Show selected tab
             document.getElementById(tabName).classList.add('active');
             event.target.classList.add('active');
         }
 
-        // Close modals on outside click
         window.onclick = function(event) {
             if (event.target.classList.contains('modal')) {
                 event.target.classList.remove('active');
             }
         }
 
-        // Initialize on load
         window.addEventListener('load', initFirebase);
     </script>
 </body>
